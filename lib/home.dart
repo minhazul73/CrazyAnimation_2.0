@@ -12,7 +12,7 @@ class Home extends StatelessWidget {
     RxBool diceClicked = false.obs;
     RxBool initAnim = false.obs;
 
-    Future.delayed(const Duration(milliseconds: 1500), () {
+    Future.delayed(const Duration(milliseconds: 1000), () {
       initAnim.value = true;
     });
 
@@ -23,16 +23,51 @@ class Home extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GestureDetector(
-                onTap: () => menuClicked.value = !menuClicked.value,
-                child: AnimatedOpacity(
-                  duration: const Duration(milliseconds: 555),
-                  curve: Curves.linearToEaseOut,
-                  opacity: diceClicked.value ? 1 : 0,
-                  child: const Icon(Icons.menu)
-                )
-              ), 
-              SizedBox(height: size.width * .075,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Using AnimatedSlide for "Ripples" Text Animation
+                  AnimatedSlide(
+                    offset: diceClicked.value ? Offset(1.1, 0) : Offset(0, 0),
+                    duration: const Duration(milliseconds: 555),
+                    curve: Curves.linearToEaseOut,
+                    child: AnimatedOpacity(
+                      duration: const Duration(milliseconds: 555),
+                      curve: Curves.linearToEaseOut,
+                      opacity: diceClicked.value ? 1 : 0,
+                      child: GestureDetector(
+                        onTap: () {
+                          initAnim.value = false;
+                          diceClicked.value = false;
+                          menuClicked.value = false;
+                          Future.delayed(const Duration(milliseconds: 1500), () {
+                          initAnim.value = true;
+                        });
+                        },
+                        child: Text(
+                          "Ripples",
+                          style: TextStyle(
+                            fontSize: size.width * .081,
+                            fontWeight: FontWeight.w900,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () => menuClicked.value = !menuClicked.value,
+                    child: AnimatedOpacity(
+                      duration: const Duration(milliseconds: 555),
+                      curve: Curves.linearToEaseOut,
+                      opacity: diceClicked.value ? 1 : 0,
+                      child: const Icon(Icons.menu),
+                    ),
+                  ),
+                ],
+              ),
+
+              SizedBox(height: size.width * .1,),
               SizedBox(
                 width: size.width,
                 height: size.width * 1.1,
@@ -48,8 +83,8 @@ class Home extends StatelessWidget {
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 555),
                         curve: Curves.linearToEaseOut,
-                        width: initAnim.value ? diceClicked.value ? menuClicked.value ? size.width - 42 : size.width * .44 : size.width * .55 : 0,
-                        height: initAnim.value ? diceClicked.value ? menuClicked.value ? size.width * 1.1 : size.width * .44 : size.width * .55 : 0,
+                        width: initAnim.value ? diceClicked.value ? menuClicked.value ? size.width - 42 : size.width * .43 : size.width * .55 : 0,
+                        height: initAnim.value ? diceClicked.value ? menuClicked.value ? size.width * 1.1 : size.width * .43 : size.width * .55 : 0,
                         decoration: BoxDecoration(
                           color: Colors.grey,
                           borderRadius: BorderRadius.circular(menuClicked.value ? 50 : 150),
@@ -66,7 +101,7 @@ class Home extends StatelessWidget {
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 555),
                         curve: Curves.linearToEaseOut,
-                        width: initAnim.value ? diceClicked.value ? menuClicked.value ? size.width - 42 - 42 : size.width * .44 : size.width * .47 : 0.0,
+                        width: initAnim.value ? diceClicked.value ? menuClicked.value ? size.width - 42 - 42 : size.width * .43 : size.width * .47 : 0.0,
                         height: initAnim.value ? diceClicked.value ? menuClicked.value ? size.width * 1.1 - size.width * .081 - 42 - 21 : size.width * .63 : size.width * .47 : 0.0,
                         decoration: BoxDecoration(
                           color: Colors.black54,
@@ -86,7 +121,7 @@ class Home extends StatelessWidget {
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 555),
                           curve: Curves.linearToEaseOut,
-                          width: diceClicked.value ? menuClicked.value ? size.width * .081 : size.width * .44 : size.width * .38,
+                          width: diceClicked.value ? menuClicked.value ? size.width * .081 : size.width * .43 : size.width * .38,
                           height: diceClicked.value ? menuClicked.value ? size.width * .081 : size.width * 1.1 : size.width * .38,
                           decoration: BoxDecoration(
                             color: Colors.black,
@@ -96,7 +131,7 @@ class Home extends StatelessWidget {
                             child: AnimatedOpacity(
                               duration: const Duration(milliseconds: 333),
                               curve: Curves.linearToEaseOut,
-                              opacity: diceClicked.value ? 0 : 1,
+                              opacity: initAnim.value ? diceClicked.value ? 0 : 1 : 0,
                               child: Text("Go",
                                 style: TextStyle(
                                   fontSize: size.width * .047,
