@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ripple_practice/animated_menu_icon_animation_controller.dart';
 
 
 class Home extends StatelessWidget {
@@ -8,7 +9,9 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = Get.size;
-    RxBool menuClicked = false.obs;
+    AnimatedMenuIconAnimationController animatedMenuIconAnimationController =
+    Get.put(AnimatedMenuIconAnimationController());
+    RxBool menuClicked = animatedMenuIconAnimationController.isPlaying;
     RxBool diceClicked = false.obs;
     RxBool initAnim = false.obs;
 
@@ -56,12 +59,19 @@ class Home extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () => menuClicked.value = !menuClicked.value,
+                    // onTap: () => menuClicked.value = !menuClicked.value,
+                    onTap: () => animatedMenuIconAnimationController.triggerMenuClick(),
                     child: AnimatedOpacity(
                       duration: const Duration(milliseconds: 555),
                       curve: Curves.linearToEaseOut,
                       opacity: diceClicked.value ? 1 : 0,
-                      child: const Icon(Icons.menu),
+                      child: AnimatedIcon(
+                        icon: AnimatedIcons.menu_close,
+                        size: size.width * .075,
+                        color: Colors.black,
+                        progress:
+                        animatedMenuIconAnimationController
+                            .controller.value),
                     ),
                   ),
                 ],
@@ -134,7 +144,7 @@ class Home extends StatelessWidget {
                               opacity: initAnim.value ? diceClicked.value ? 0 : 1 : 0,
                               child: Text("Go",
                                 style: TextStyle(
-                                  fontSize: size.width * .047,
+                                  fontSize: size.width * .071,
                                   fontWeight: FontWeight.w900,
                                   color: Colors.white
                                 ),
