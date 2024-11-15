@@ -27,4 +27,9 @@ class AnimatedMenuIconAnimationController extends GetxController with GetSingleT
     }
   }
 
+  resetToMenu() {
+    isPlaying.value = false;
+    _controller.reset();
+  }
+
 }
